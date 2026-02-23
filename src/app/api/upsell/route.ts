@@ -3,10 +3,11 @@ import { stripe } from '@/lib/stripe';
 import db from '@/lib/db';
 
 export async function POST(req: Request) {
+    await db.init();
     try {
         const { userId, targetPriceId } = await req.json();
 
-        const user = db.prepare('SELECT * FROM users WHERE id = ?').get(userId) as any;
+        const user = await db.get('SELECT * FROM users WHERE id = ?', [userId]) as any;
         if (!user || !user.stripe_customer_id) {
             return NextResponse.json({ error: 'User or customer not found' }, { status: 404 });
         }

@@ -4,9 +4,9 @@ import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
-export default function AdminPage() {
-    const users = db.prepare('SELECT * FROM users').all() as any[];
-    const orders = db.prepare('SELECT orders.*, users.name as user_name FROM orders JOIN users ON orders.user_id = users.id ORDER BY created_at DESC').all() as any[];
+export default async function AdminPage() {
+    const users = await db.query('SELECT * FROM users') as any[];
+    const orders = await db.query('SELECT orders.*, users.name as user_name FROM orders JOIN users ON orders.user_id = users.id ORDER BY created_at DESC') as any[];
 
     return (
         <div className="bg-[#F9FAF9] min-h-screen">
@@ -79,8 +79,8 @@ export default function AdminPage() {
                                                 </td>
                                                 <td className="py-6">
                                                     <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${user.subscription_status === 'active'
-                                                            ? 'bg-[#4C583E]/10 text-[#4C583E]'
-                                                            : 'bg-zinc-100 text-zinc-400'
+                                                        ? 'bg-[#4C583E]/10 text-[#4C583E]'
+                                                        : 'bg-zinc-100 text-zinc-400'
                                                         }`}>
                                                         {user.subscription_status}
                                                     </span>

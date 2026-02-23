@@ -3,6 +3,7 @@ import { stripe } from '@/lib/stripe';
 import db from '@/lib/db';
 
 export async function POST(req: Request) {
+    await db.init();
     try {
         const { priceId, userId } = await req.json();
 
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
         }
 
         // Get user from DB
-        const user = db.prepare('SELECT * FROM users WHERE id = ?').get(userId) as any;
+        const user = await db.get('SELECT * FROM users WHERE id = ?', [userId]) as any;
         if (!user) {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
@@ -25,7 +26,7 @@ export async function POST(req: Request) {
                 metadata: { userId: user.id },
             });
             stripeCustomerId = customer.id;
-            db.prepare('UPDATE users SET stripe_customer_id = ? WHERE id = ?').run(stripeCustomerId, userId);
+            await db.query('UPDATE users SET stripe_customer_id = ? WHERE id = ?', [stripeCustomerId, userId]);
         }
 
         // Create checkout session

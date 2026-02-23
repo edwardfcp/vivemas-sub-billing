@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import db from '@/lib/db';
 
 export async function GET(req: Request) {
+    await db.init();
     const { searchParams } = new URL(req.url);
     const userId = searchParams.get('userId');
 
@@ -9,7 +10,7 @@ export async function GET(req: Request) {
         return NextResponse.json({ error: 'Missing userId' }, { status: 400 });
     }
 
-    const user = db.prepare('SELECT * FROM users WHERE id = ?').get(userId) as any;
+    const user = await db.get('SELECT * FROM users WHERE id = ?', [userId]) as any;
     if (!user) {
         return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
