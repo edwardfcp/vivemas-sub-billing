@@ -29,7 +29,7 @@ export async function GET(req: Request) {
         });
 
         if (subscriptions.data.length > 0) {
-            const sub = subscriptions.data[0];
+            const sub = subscriptions.data[0] as any;
             await db.query(`
                 UPDATE users SET 
                 subscription_status = 'active',
