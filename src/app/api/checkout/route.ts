@@ -49,7 +49,15 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ url: session.url });
     } catch (error: any) {
-        console.error('Checkout error:', error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        console.error('Checkout error detail:', {
+            message: error.message,
+            stack: error.stack,
+            type: error.type,
+            raw: error.raw
+        });
+        return NextResponse.json({
+            error: error.message,
+            detail: error.type || 'Unknown error type'
+        }, { status: 500 });
     }
 }
