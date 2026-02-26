@@ -18,6 +18,9 @@ const mockUsers: User[] = [
     { id: 'user_001', name: 'Juan del Pueblo', email: 'juan@test.com' },
     { id: 'user_002', name: 'Maria Rodriguez', email: 'maria@test.com' },
     { id: 'user_003', name: 'Carlos Rivera', email: 'carlos@test.com' },
+    { id: 'user_004', name: 'Ana García', email: 'ana@test.com' },
+    { id: 'user_005', name: 'Roberto Mejia', email: 'roberto@test.com' },
+    { id: 'user_006', name: 'Elena Santos', email: 'elena@test.com' },
 ];
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
