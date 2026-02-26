@@ -5,6 +5,7 @@ import Link from 'next/link';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminPage() {
+    await db.init();
     const users = await db.query('SELECT * FROM users') as any[];
     const orders = await db.query('SELECT orders.*, users.name as user_name FROM orders JOIN users ON orders.user_id = users.id ORDER BY created_at DESC') as any[];
 
